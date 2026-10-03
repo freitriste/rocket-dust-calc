@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team GO Rocket Purification & Grunt Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-full flex flex-col antialiased selection:bg-rose-600 selection:text-white">
+
+    <header class="bg-gradient-to-r from-slate-900 via-zinc-900 to-slate-900 border-b border-slate-800 sticky top-0 z-30 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-600 to-red-700 flex items-center justify-center shadow-lg shadow-rose-900/40 border border-rose-500/30">
+                    <i class="fa-solid fa-rocket text-white text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                        Rocket Shadow Index
+                        <span class="text-xs px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-400 border border-rose-500/30 font-medium">v2.6 Live</span>
+                    </h1>
+                    <p class="text-xs text-slate-400">Purification Costs & Grunt Rotations Reference</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-2 bg-slate-900/80 p-1.5 rounded-xl border border-slate-800">
+                <button onclick="switchTab('lookup')" id="btn-lookup" class="px-4 py-2 text-xs font-semibold rounded-lg transition-all duration-200 bg-rose-600 text-white shadow-md shadow-rose-900/30">
+                    <i class="fa-solid fa-magnifying-glass mr-1.5"></i> Smart Lookup
+                </button>
+                <button onclick="switchTab('database')" id="btn-database" class="px-4 py-2 text-xs font-semibold rounded-lg transition-all duration-200 text-slate-400 hover:text-white hover:bg-slate-800">
+                    <i class="fa-solid fa-database mr-1.5"></i> Full Rotation DB
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- LOOKUP TAB CONTENT -->
+        <div id="tab-lookup" class="space-y-8">
+            
+            <!-- Hero Search & Filter Section -->
+            <div class="bg-gradient-to-b from-slate-900 to-slate-900/60 rounded-2xl border border-slate-800/80 p-6 sm:p-8 shadow-2xl relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-rose-600/5 rounded-full blur-3xl pointer-events-none"></div>
+                
+                <div class="max-w-3xl mx-auto text-center space-y-3 mb-8">
+                    <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white">Find Shadow Costs Instantly</h2>
+                    <p class="text-sm text-slate-400">Search by Grunt taunt phrase or directly by the catchable 1st slot Pokémon to calculate required purification dust.</p>
+                </div>
+
+                <div class="max-w-2xl mx-auto space-y-4">
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-search text-slate-500"></i>
+                        </div>
+                        <input type="text" id="global-search" oninput="handleSearch(this.value)" placeholder="Type taunt phrase (e.g. 'Let's rock') or Pokémon name ('Snorlax', 'Aron')..." 
+                            class="w-full pl-11 pr-4 py-3.5 bg-slate-950/90 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500 shadow-inner transition-all">
+                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                            <button onclick="clearSearch()" id="clear-btn" class="hidden text-slate-500 hover:text-white p-1 text-xs">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Quick Tags / Suggestions -->
+                    <div class="flex flex-wrap items-center justify-center gap-2 pt-2">
+                        <span class="text-xs text-slate-500 font-medium mr-1">Quick Try:</span>
+                        <button onclick="quickSearch('Let\'s rock and roll!')" class="text-xs bg-slate-800/80 hover:bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700/60 transition-colors">
+                            "Let's rock and roll!"
+                        </button>
+                        <button onclick="quickSearch('Snorlax')" class="text-xs bg-slate-800/80 hover:bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700/60 transition-colors">
+                            Snorlax
+                        </button>
+                        <button onclick="quickSearch('Fooled ya, twerp.')" class="text-xs bg-slate-800/80 hover:bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700/60 transition-colors">
+                            "Fooled ya, twerp."
+                        </button>
+                        <button onclick="quickSearch('Aron')" class="text-xs bg-slate-800/80 hover:bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700/60 transition-colors">
+                            Aron
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Container -->
+            <div id="search-results" class="space-y-6">
+                <div class="text-center py-12 text-slate-500 border border-dashed border-slate-800 rounded-2xl">
+                    <i class="fa-solid fa-rocket text-3xl mb-3 text-slate-700 animate-pulse"></i>
+                    <p class="text-sm font-medium">Start typing a taunt or Pokémon name above to query rotation and purification costs.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- DATABASE TAB CONTENT -->
+        <div id="tab-database" class="hidden space-y-6">
+            
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-slate-900/60 p-5 rounded-2xl border border-slate-800">
+                <div>
+                    <h2 class="text-lg font-bold text-white">Complete Rotation & Purification Matrix</h2>
+                    <p class="text-xs text-slate-400">All currently mapped Grunts, taunts, first slot Pokémon, and purification dust requirements.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5 animate-ping"></span> 1K Dust
+                    </span>
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                        3K Dust
+                    </span>
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-rose-500/10 text-rose-400 border border-rose-500/20">
+                        5K Dust
+                    </span>
+                </div>
+            </div>
+
+            <!-- Database Table Grid -->
+            <div class="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden shadow-xl">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-800 bg-slate-950/60 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                                <th class="py-4 px-6">Grunt Type</th>
+                                <th class="py-4 px-6">Taunt Phrase</th>
+                                <th class="py-4 px-6">Catchable 1st Pokémon</th>
+                                <th class="py-4 px-6 text-right">Purification Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody id="full-db-tbody" class="divide-y divide-slate-800/60 text-sm">
+                            <!-- Populated via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <div id="custom-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm hidden">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl relative space-y-4">
+            <div class="flex items-center justify-between">
+                <h3 id="modal-title" class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-circle-info text-rose-500"></i> Notice
+                </h3>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-800 transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div id="modal-content" class="text-sm text-slate-300 leading-relaxed">
+                <!-- Content inserted dynamically -->
+            </div>
+            <div class="flex justify-end pt-2">
+                <button onclick="closeModal()" class="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white text-xs font-semibold rounded-xl transition-colors shadow-lg shadow-rose-900/30">
+                    Got it
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Master Database combining Grunts, Taunts, Catchable First Pokémon, and Purification Costs
+        const rocketDatabase = [
+            {
+                type: "Rock",
+                taunt: "Let's rock and roll!",
+                pokemon: [
+                    { name: "Onix", cost: 5000 },
+                    { name: "Cranidos", cost: 5000 },
+                    { name: "Kabuto", cost: 3000 }
+                ]
+            },
+            {
+                type: "Steel",
+                taunt: "You're no match for my iron will!",
+                pokemon: [
+                    { name: "Alolan Sandshrew", cost: 3000 },
+                    { name: "Beldum", cost: 5000 },
+                    { name: "Aron", cost: 1000 }
+                ]
+            },
+            {
+                type: "Water (Female)",
+                taunt: "Isn't it about time you felt like enjoying some sea breeze or water?",
+                pokemon: [
+                    { name: "Mudkip", cost: 3000 },
+                    { name: "Krabby", cost: 3000 },
+                    { name: "Tentacool", cost: 3000 }
+                ]
+            },
+            {
+                type: "Water (Male)",
+                taunt: "These waters are treacherous!",
+                pokemon: [
+                    { name: "Magikarp", cost: 1000 },
+                    { name: "Feebas", cost: 5000 }
+                ]
+            },
+            {
+                type: "Snorlax",
+                taunt: "Don't bother—I've already won. / Get ready to be defeated! / Winning is for winners!",
+                pokemon: [
+                    { name: "Snorlax", cost: 5000 },
+                    { name: "Lapras", cost: 5000 }
+                ]
+            },
+            {
+                type: "Starters",
+                taunt: "Do you know how hot breath can burn?",
+                pokemon: [
+                    { name: "Bulbasaur", cost: 3000 },
+                    { name: "Charmander", cost: 3000 },
+                    { name: "Squirtle", cost: 3000 }
+                ]
+            },
+            {
+                type: "Decoy",
+                taunt: "Fooled ya, twerp.",
+                pokemon: [
+                    { name: "Bellsprout", cost: 1000 }
+                ]
+            },
+            {
+                type: "Psychic",
+                taunt: "Are you scared of psychics that use unseen power?",
+                pokemon: [
+                    { name: "Drowzee", cost: 3000 },
+                    { name: "Wobbuffet", cost: 3000 },
+                    { name: "Ralts", cost: 5000 }
+                ]
+            },
+            {
+                type: "Normal",
+                taunt: "Normal doesn't mean weak.",
+                pokemon: [
+                    { name: "Rattata", cost: 1000 },
+                    { name: "Meowth", cost: 1000 },
+                    { name: "Teddiursa", cost: 3000 }
+                ]
+            },
+            {
+                type: "Poison",
+                taunt: "Coiled and ready to strike!",
+                pokemon: [
+                    { name: "Zubat", cost: 1000 },
+                    { name: "Venonat", cost: 1000 },
+                    { name: "Oddish", cost: 1000 }
+                ]
+            }
+        ];
+
+        // Tab Switching Logic
+        function switchTab(tab) {
+            const lookupTab = document.getElementById('tab-lookup');
+            const dbTab = document.getElementById('tab-database');
+            const btnLookup = document.getElementById('btn-lookup');
+            const btnDb = document.getElementById('btn-database');
+
+            if (tab === 'lookup') {
+                lookupTab.classList.remove('hidden');
+                dbTab.classList.add('hidden');
+                btnLookup.className = "px-4 py-2 text-xs font-semibold rounded-lg transition-all duration-200 bg-rose-600 text-white shadow-md shadow-rose-900/30";
+                btnDb.className = "px-4 py-2 text-xs font-semibold rounded-lg transition-all duration-200 text-slate-400 hover:text-white hover:bg-slate-800";
+            } else {
+                lookupTab.classList.add('hidden');
+                dbTab.classList.remove('hidden');
+                btnDb.className = "px-4 py-2 text-xs font-semibold rounded-lg transition-all duration-200 bg-rose-600 text-white shadow-md shadow-rose-900/30";
+                btnLookup.className = "px-4 py-2 text-xs font-semibold rounded-lg transition-all duration-200 text-slate-400 hover:text-white hover:bg-slate-800";
+                renderDatabaseTable();
+            }
+        }
+
+        // Render Database Table
+        function renderDatabaseTable() {
+            const tbody = document.getElementById('full-db-tbody');
+            tbody.innerHTML = '';
+
+            rocketDatabase.forEach(item => {
+                item.pokemon.forEach(p => {
+                    const costBadge = getCostBadge(p.cost);
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-slate-800/40 transition-colors";
+                    tr.innerHTML = `
+                        <td class="py-3.5 px-6 font-semibold text-white flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-rose-500"></span> ${item.type}
+                        </td>
+                        <td class="py-3.5 px-6 text-slate-300 text-xs italic">"${item.taunt}"</td>
+                        <td class="py-3.5 px-6 font-medium text-white">${p.name}</td>
+                        <td class="py-3.5 px-6 text-right">${costBadge}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            });
+        }
+
+        function getCostBadge(cost) {
+            if (cost === 1000) {
+                return `<span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">1,000 Dust</span>`;
+            } else if (cost === 3000) {
+                return `<span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">3,000 Dust</span>`;
+            } else {
+                return `<span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-rose-500/10 text-rose-400 border border-rose-500/20">5,000 Dust</span>`;
+            }
+        }
+
+        // Handle Search Query
+        function handleSearch(query) {
+            const clearBtn = document.getElementById('clear-btn');
+            const resultsContainer = document.getElementById('search-results');
+            
+            if (query.trim().length > 0) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+                resultsContainer.innerHTML = `
+                    <div class="text-center py-12 text-slate-500 border border-dashed border-slate-800 rounded-2xl">
+                        <i class="fa-solid fa-rocket text-3xl mb-3 text-slate-700 animate-pulse"></i>
+                        <p class="text-sm font-medium">Start typing a taunt or Pokémon name above to query rotation and purification costs.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const searchTerm = query.toLowerCase().trim();
+            const matches = rocketDatabase.filter(entry => {
+                const matchTaunt = entry.taunt.toLowerCase().includes(searchTerm) || entry.type.toLowerCase().includes(searchTerm);
+                const matchPokemon = entry.pokemon.some(p => p.name.toLowerCase().includes(searchTerm));
+                return matchTaunt || matchPokemon;
+            });
+
+            if (matches.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-8 text-center space-y-3">
+                        <i class="fa-solid fa-triangle-exclamation text-amber-500 text-2xl"></i>
+                        <h3 class="text-base font-bold text-white">No Matching Grunt or Pokémon Found</h3>
+                        <p class="text-xs text-slate-400">Check your spelling or try searching for another taunt phrase or catchable shadow name.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Build HTML cards for matches
+            let html = '';
+            matches.forEach(item => {
+                // Check if this grunt type/rotation has 1k dust Pokémon
+                const has1k = item.pokemon.some(p => p.cost === 1000);
+                
+                html += `
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-800 pb-4">
+                            <div>
+                                <span class="text-xs font-semibold px-2.5 py-1 rounded-md bg-rose-500/20 text-rose-400 border border-rose-500/30 uppercase tracking-wider">${item.type} Grunt</span>
+                                <h3 class="text-base font-bold text-white mt-1.5 italic">"${item.taunt}"</h3>
+                            </div>
+                            ${!has1k ? `
+                                <div class="bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs px-3 py-1.5 rounded-xl flex items-center gap-2">
+                                    <i class="fa-solid fa-circle-exclamation"></i>
+                                    <span>Note: No 1,000 Dust Pokémon in this rotation! Lowest is 3k/5k.</span>
+                                </div>
+                            ` : `
+                                <div class="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs px-3 py-1.5 rounded-xl flex items-center gap-2">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    <span>1,000 Dust option available in rotation</span>
+                                </div>
+                            `}
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                `;
+
+                item.pokemon.forEach(p => {
+                    html += `
+                        <div class="bg-slate-950/60 border border-slate-800/80 rounded-xl p-4 flex items-center justify-between gap-3">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-9 h-9 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-rose-500 font-bold text-xs shadow-inner">
+                                    <i class="fa-solid fa-shield-halved"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-white">${p.name}</h4>
+                                    <p class="text-[10px] text-slate-400">1st Slot Catchable</p>
+                                </div>
+                            </div>
+                            <div>
+                                ${getCostBadge(p.cost)}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += `
+                        </div>
+                    </div>
+                `;
+            });
+
+            resultsContainer.innerHTML = html;
+        }
+
+        function clearSearch() {
+            document.getElementById('global-search').value = '';
+            handleSearch('');
+        }
+
+        function quickSearch(term) {
+            const input = document.getElementById('global-search');
+            input.value = term;
+            handleSearch(term);
+        }
+
+        function closeModal() {
+            document.getElementById('custom-modal').classList.add('hidden');
+        }
+
+        function showModal(title, content) {
+            document.getElementById('modal-title').innerHTML = `<i class="fa-solid fa-circle-info text-rose-500"></i> ${title}`;
+            document.getElementById('modal-content').innerHTML = content;
+            document.getElementById('custom-modal').classList.remove('hidden');
+        }
+
+        // Initialize table on load
+        window.onload = function() {
+            renderDatabaseTable();
+        };
+    </script>
+</body>
+</html>
